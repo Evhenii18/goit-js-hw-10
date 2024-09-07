@@ -90,10 +90,5 @@ button:disabled {
 	background-color: #6C8CFF;
 }
 
-.flatpickr-calendar {
-  background-color: #f44c04;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
+
 
