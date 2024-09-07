@@ -84,11 +84,42 @@ button:disabled {
 	padding: 8px 16px;
 	color: #FFFFFF;
 	background-color: #4E75FF;
+	text-align: center;
 }
 
 .button:hover {
 	background-color: #6C8CFF;
 }
 
+.form {
+	display: flex;
+	flex-direction: column;
+}
 
+.snackbar-container {
+	width: 25%;
+}
 
+#delay {
+	margin-top: 8px;
+	margin-bottom: 16px;
+	outline: none;
+	border: 1px solid #808080;
+	border-radius: 4px;
+	padding: 8px 16px;
+}
+
+#delay:hover {
+	border: 1px solid #000000;
+}
+
+#delay:focus {
+	border: 1px solid #4E75FF;
+}
+
+fieldset {
+	display: flex;
+	gap: 48px;
+	align-items: center;
+	justify-content: center;
+}

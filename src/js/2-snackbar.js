@@ -1,57 +1,44 @@
-const formData = {
-	email: '',
-	message: ''
-};
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
-const form = document.querySelector('.feedback-form');
-const emailInput = form.querySelector('input[name="email"]');
-const messageInput = form.querySelector('textarea[name="message"]');
+// Вибираємо елементи форми
+const form = document.querySelector('.form');
+const delayInput = form.elements['delay'];
+const stateInputs = form.elements['state'];
 
-const STORAGE_KEY = 'feedback-form-state';
+// Обробка сабміту форми
+form.addEventListener('submit', function (event) {
+	event.preventDefault();
 
-function saveToLocalStorage() {
-	localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-}
+	// Отримуємо значення з форми
+	const delay = Number(delayInput.value);
+	const selectedState = stateInputs.value;
 
-form.addEventListener('input', (event) => {
-	formData[event.target.name] = event.target.value.trim(); 
-	saveToLocalStorage();
+	// Створюємо проміс з затримкою
+	createPromise(delay, selectedState)
+		.then((delay) => {
+			iziToast.success({
+				title: 'Success',
+				message: `✅ Fulfilled promise in ${delay}ms`,
+			});
+		})
+		.catch((delay) => {
+			iziToast.error({
+				title: 'Error',
+				message: `❌ Rejected promise in ${delay}ms`,
+			});
+		});
 });
 
-function populateFormFields() {
-	const savedData = localStorage.getItem(STORAGE_KEY);
-
-	if (savedData) {
-		const parsedData = JSON.parse(savedData);
-
-		if (parsedData.email) {
-			emailInput.value = parsedData.email;
-			formData.email = parsedData.email; 
-		}
-		if (parsedData.message) {
-			messageInput.value = parsedData.message;
-			formData.message = parsedData.message; 
-		}
-	}
+// Функція створення промісу
+function createPromise(delay, state) {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			if (state === 'fulfilled') {
+				resolve(delay);
+			} else {
+				reject(delay);
+			}
+		}, delay);
+	});
 }
-
-// Викликаємо функцію для заповнення полів форми при завантаженні сторінки
-document.addEventListener('DOMContentLoaded', populateFormFields);
-
-// Обробка події submit форми
-form.addEventListener('submit', (event) => {
-	event.preventDefault(); // Запобігаємо стандартному відправленню форми
-
-	// Перевіряємо, чи обидва поля заповнені
-	if (formData.email === '' || formData.message === '') {
-		alert('Fill please all fields');
-	} else {
-		console.log('Form data:', formData);
-
-		// Очищення даних після успішного відправлення форми
-		localStorage.removeItem(STORAGE_KEY);
-		formData.email = '';
-		formData.message = '';
-		form.reset(); // Очищення полів форми
-	}
-});
